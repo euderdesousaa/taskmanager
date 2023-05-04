@@ -2,11 +2,14 @@ package com.example.TaskManager.service;
 
 import com.example.TaskManager.dto.UserDTO;
 import com.example.TaskManager.entities.User;
+import com.example.TaskManager.expection.EntityNotFoundException;
 import com.example.TaskManager.repository.UserRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,5 +22,12 @@ public class UserService {
         List<User> list = repository.findAll();
         return list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
     }
+
+    public UserDTO findById(Long id){
+        Optional<User> obj = repository.findById(id);
+        User entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity Not Found"));
+        return new UserDTO(entity);
+    }
+
 
 }
