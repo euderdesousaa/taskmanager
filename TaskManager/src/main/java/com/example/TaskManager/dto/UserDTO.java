@@ -1,19 +1,17 @@
 package com.example.TaskManager.dto;
 
+import com.example.TaskManager.entities.Task;
 import com.example.TaskManager.entities.User;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class UserDTO {
-
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +20,14 @@ public class UserDTO {
     private String name;
     private String email;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    private List<Task> taskList = new ArrayList<>();
+
     public UserDTO(User entity) {
         name = entity.getName();
         id = entity.getId();
         email = entity.getEmail();
+        taskList = entity.getTaskList();
     }
 
     public UserDTO(Long id, String name, String email) {

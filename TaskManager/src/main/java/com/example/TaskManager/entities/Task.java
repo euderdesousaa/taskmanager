@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_tasks")
@@ -32,7 +32,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    private LocalDateTime init_date;
-    private LocalDateTime end_date;
+    private LocalDate init_date;
+    private LocalDate end_date;
 
 }

@@ -1,27 +1,19 @@
-package com.example.TaskManager.entities;
+package com.example.TaskManager.dto;
 
 import com.example.TaskManager.entities.Enuns.Status;
+import com.example.TaskManager.entities.Project;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-@Table(name = "tb_project")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Project {
+public class ProjectDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
     private LocalDate init_date;
     private LocalDate end_date;
 
@@ -31,9 +23,15 @@ public class Project {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne
-    private User manager;
+    public ProjectDTO(Project entity){
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.description = entity.getDescription();
+        this.status = entity.getStatus();
+        this.init_date = entity.getInit_date();
+        this.end_date = entity.getEnd_date();
+    }
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Task> taskList = new ArrayList<>();
+    public ProjectDTO(){}
+
 }
