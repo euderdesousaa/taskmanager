@@ -1,7 +1,7 @@
 package com.example.TaskManager.dto;
 
 
-import com.example.TaskManager.entities.Enuns.Priority;
+import com.example.TaskManager.entities.enums.Priority;
 import com.example.TaskManager.entities.Project;
 import com.example.TaskManager.entities.Task;
 import com.example.TaskManager.entities.User;

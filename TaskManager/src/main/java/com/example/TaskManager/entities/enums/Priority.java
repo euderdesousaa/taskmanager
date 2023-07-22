@@ -1,4 +1,4 @@
-package com.example.TaskManager.entities.Enuns;
+package com.example.TaskManager.entities.enums;
 
 import lombok.Getter;
 

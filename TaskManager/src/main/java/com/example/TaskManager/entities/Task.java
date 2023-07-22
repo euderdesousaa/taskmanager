@@ -1,6 +1,6 @@
 package com.example.TaskManager.entities;
 
-import com.example.TaskManager.entities.Enuns.Priority;
+import com.example.TaskManager.entities.enums.Priority;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

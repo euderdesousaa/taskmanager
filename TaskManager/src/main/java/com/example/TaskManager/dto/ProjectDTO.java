@@ -1,6 +1,6 @@
 package com.example.TaskManager.dto;
 
-import com.example.TaskManager.entities.Enuns.Status;
+import com.example.TaskManager.entities.enums.Status;
 import com.example.TaskManager.entities.Project;
 import jakarta.persistence.*;
 import lombok.Data;
