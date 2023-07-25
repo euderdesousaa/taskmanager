@@ -32,7 +32,4 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    private LocalDate init_date;
-    private LocalDate end_date;
-
 }
