@@ -12,6 +12,7 @@ import com.example.TaskManager.service.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +28,12 @@ public class UserService {
 
     private final UserMapper mapper;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Transactional(readOnly = true)
     public List<UserDTO> findAllPaged() {
         List<User> list = repository.findAll();
-        return list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+        return list.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -66,7 +69,9 @@ public class UserService {
 
     @Transactional
     public UserDTO insert(UserInsertDTO dto) {
+        String encodedPassword = this.bCryptPasswordEncoder.encode(dto.getPassword());
         User save = repository.save(mapper.toEntityInsert(dto));
+        save.setPassword(encodedPassword);
         return mapper.toDTO(save);
     }
 
