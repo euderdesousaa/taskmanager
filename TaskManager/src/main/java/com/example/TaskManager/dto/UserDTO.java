@@ -1,20 +1,20 @@
 package com.example.TaskManager.dto;
 
-import com.example.TaskManager.entities.Task;
 import com.example.TaskManager.entities.User;
-import jakarta.persistence.*;
+import com.example.TaskManager.entities.enums.Roles;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class UserDTO {
 
     @Id
@@ -23,17 +23,18 @@ public class UserDTO {
 
     private String name;
 
+    private String login;
+
     @Email
     private String email;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Task> taskList = new ArrayList<>();
+    private Roles role;
 
     public UserDTO(User entity) {
         name = entity.getName();
         id = entity.getId();
         email = entity.getEmail();
-        taskList = entity.getTaskList();
+        login = entity.getLogin();
     }
 
 }
