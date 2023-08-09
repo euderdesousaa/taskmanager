@@ -1,48 +1,41 @@
 package com.example.TaskManager.dto;
 
 
-import com.example.TaskManager.entities.enums.Priority;
 import com.example.TaskManager.entities.Project;
 import com.example.TaskManager.entities.Task;
-import com.example.TaskManager.entities.User;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
+
 public class TaskDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    @ManyToOne
-    private Project project;
-
-    @ManyToOne
-    private User owner;
-
-    @Column(columnDefinition = "TEXT")
+    private String title;
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private Priority priority;
+    @ManyToOne
+    @JsonIgnore
+    private Project project;
 
-    public TaskDTO(){}
 
     public TaskDTO(Task entity) {
         this.id = entity.getId();
-        this.name = entity.getName();
         this.description = entity.getDescription();
-        this.owner = entity.getOwner();
-        this.priority = entity.getPriority();
         this.project = entity.getProject();
     }
 
-    public TaskDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public TaskDTO() {
+    }
+
+    public TaskDTO(Project entity) {
+        title = entity.getName();
+        description = entity.getProjectDescription();
     }
 }

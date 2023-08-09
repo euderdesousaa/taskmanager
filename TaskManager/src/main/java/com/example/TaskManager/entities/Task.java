@@ -1,35 +1,34 @@
 package com.example.TaskManager.entities;
 
-import com.example.TaskManager.entities.enums.Priority;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_tasks")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id")
     private Long id;
 
-    private String name;
-
-    @ManyToOne
-    private Project project;
-
-    @ManyToOne
-    private User owner;
+    @Size(min = 4, max = 16)
+    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private Priority priority;
+    @ManyToOne
+    @JsonIgnore
+    private Project project;
 
 }
