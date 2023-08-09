@@ -1,37 +1,43 @@
 package com.example.TaskManager.dto;
 
-import com.example.TaskManager.entities.enums.Status;
 import com.example.TaskManager.entities.Project;
+import com.example.TaskManager.entities.Task;
+import com.example.TaskManager.entities.User;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private LocalDate init_date;
-    private LocalDate end_date;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String projectDescription;
 
-    public ProjectDTO(Project entity){
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private List<Task> tasks;
+
+    public ProjectDTO(Project entity) {
         this.id = entity.getId();
         this.name = entity.getName();
-        this.description = entity.getDescription();
-        this.status = entity.getStatus();
-        this.init_date = entity.getInit_date();
-        this.end_date = entity.getEnd_date();
+        this.owner = entity.getOwner();
+        this.tasks = entity.getTasks();
+        this.projectDescription = entity.getProjectDescription();
     }
-
-    public ProjectDTO(){}
 
 }

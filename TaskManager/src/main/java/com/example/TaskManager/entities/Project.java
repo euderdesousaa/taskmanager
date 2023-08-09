@@ -1,20 +1,19 @@
 package com.example.TaskManager.entities;
 
-import com.example.TaskManager.entities.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "tb_project")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Project {
 
     @Id
@@ -22,18 +21,15 @@ public class Project {
     private Long id;
     private String name;
 
-    private LocalDate init_date;
-    private LocalDate end_date;
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String projectDescription;
 
-    @ManyToOne
-    private User manager;
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private List<Task> tasks;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Task> taskList = new ArrayList<>();
 }
+
