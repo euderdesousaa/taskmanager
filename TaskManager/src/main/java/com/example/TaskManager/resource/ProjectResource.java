@@ -1,52 +1,47 @@
 package com.example.TaskManager.resource;
 
 import com.example.TaskManager.dto.ProjectDTO;
+import com.example.TaskManager.dto.ProjectInsertDTO;
+import com.example.TaskManager.entities.Task;
 import com.example.TaskManager.service.ProjectService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
-@RequestMapping(value = "/project")
+@RequestMapping(value = "/projects")
+@RequiredArgsConstructor
 public class ProjectResource {
 
-    @Autowired
-    private ProjectService service;
+    private final ProjectService service;
 
-    @GetMapping
-    public ResponseEntity<List<ProjectDTO>> findAll() {
-        List<ProjectDTO> list = service.findAllPaged();
-        return ResponseEntity.ok().body(list);
-    }
-
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ProjectDTO> findById(@PathVariable Long id) {
-        ProjectDTO project = service.findById(id);
-        return ResponseEntity.ok().body(project);
-    }
-
-    @PostMapping
-    public ResponseEntity<ProjectDTO> insert(@RequestBody ProjectDTO dto) {
-        dto = service.insert(dto);
+    @PostMapping("/create-project")
+    public ResponseEntity<ProjectDTO> insertProject(@Valid @RequestBody ProjectInsertDTO dto) {
+        ProjectDTO newDTO = service.insertProject(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").
-                buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
+                buildAndExpand(newDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(newDTO);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<ProjectDTO> delete(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/listProject/{projectId}")
+    public ResponseEntity<ProjectDTO> getProjectById(@PathVariable Long projectId) {
+        ProjectDTO dto = service.getProjectById(projectId);
+        return ResponseEntity.ok().body(dto);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<ProjectDTO> update(@PathVariable Long id, @Valid @RequestBody ProjectDTO dto) {
-        ProjectDTO newDto = service.update(id, dto);
-        return ResponseEntity.ok().body(newDto);
+    @PostMapping("/{projectId}/tasks")
+    public void addTaskToProject(@PathVariable Long projectId, @RequestBody Task task) {
+        service.addTaskToProject(projectId, task);
     }
+
+    @DeleteMapping("/{projectId}/tasks/{taskId}")
+    public ResponseEntity<String> deleteTask(@PathVariable Long taskId) {
+        service.deleteTaskFromProject(taskId);
+        return ResponseEntity.ok("Tarefa excluída com sucesso");
+    }
+
 }
