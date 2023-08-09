@@ -1,16 +1,13 @@
 package com.example.TaskManager.resource;
 
 import com.example.TaskManager.dto.UserDTO;
-import com.example.TaskManager.dto.UserInsertDTO;
 import com.example.TaskManager.dto.UserUpdateDTO;
 import com.example.TaskManager.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -40,14 +37,6 @@ public class UserResource {
     public ResponseEntity<UserDTO> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping
-    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
-        UserDTO newDTO = service.insert(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").
-                buildAndExpand(newDTO.getId()).toUri();
-        return ResponseEntity.created(uri).body(newDTO);
     }
 
     @PutMapping("/{id}")
