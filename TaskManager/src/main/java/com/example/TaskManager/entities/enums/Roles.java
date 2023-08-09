@@ -1,25 +1,16 @@
 package com.example.TaskManager.entities.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Roles {
-    OWNER("owner"),
-    USER("user");
+    OWNER("ROLE_OWNER"),
+    USER("ROLE_USER");
 
     private final String role;
 
-    Roles(String roles) {
-        this.role = roles;
+    Roles(String role) {
+        this.role = role;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public static Roles getRoleEnum(String roleString) {
-        return switch (roleString.toLowerCase()) {
-            case "owner" -> Roles.OWNER;
-            case "user" -> Roles.USER;
-            default -> throw new IllegalArgumentException("Role [" + roleString
-                    + "] not supported.");
-        };
-    }
 }
